@@ -1,0 +1,21 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps
+  namespace: config-scmvanilla-l4zvij
+spec:
+  interval: 10m0s
+  dependsOn:
+    - name: infrastructure
+    - name: siebel-operator
+  sourceRef:
+    kind: GitRepository
+    name: config-scmvanilla-l4zvij
+    namespace: config-scmvanilla-l4zvij
+  path: ./FluxFolder/apps/staging
+  prune: true
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: siebel
+      namespace: config-scmvanilla-l4zvij
